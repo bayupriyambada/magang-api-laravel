@@ -6,9 +6,15 @@ use App\Helpers\ResponseHelpers;
 use App\Helpers\ConstantaHelpers;
 
 class ConditionHelpers{
-  public static function conditionIf($variable, $text = null){
+  public function conditionIf($variable,$text){
     if(strlen($variable) == 0){
       return ResponseHelpers::Failed(404, $text . ConstantaHelpers::DATA_EMPTY);
     }
+    // return $variable;
   }
+  
+  public static function condition404($text){
+    return ResponseHelpers::Failed(404, $text);
+  }
+  
 }

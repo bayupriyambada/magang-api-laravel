@@ -7,75 +7,80 @@ use App\Helpers\FormatHelpers;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\ConditionHelpers;
 use App\Helpers\ConstantaHelpers;
-use App\Models\Magang\KategoriModel;
+use App\Models\Magang\LokasiModel;
 
-class KategoriRepo {
-    
+class LokasiRepo {
+
   public function getList(){
     try {
-      $kategori = KategoriModel::query()->data()->get();
-      return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $kategori);
+      $lokasi = LokasiModel::query()->data()->get();
+      return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $lokasi);
     } catch (\Throwable $th) {
       return ResponseHelpers::Failed(400, $th->getMessage());
     }
   }
   public function getSave($params){
+    
     try {
-      $kategori = isset($params['kategori']) ? $params['kategori'] : '';
-      if(strlen($kategori) == 0){
-        return ConditionHelpers::condition404('Kategori '. ConstantaHelpers::DATA_EMPTY);
+      $lokasi = isset($params['lokasi']) ? $params['lokasi'] : '';      
+      if(strlen($lokasi) == 0){
+        return ConditionHelpers::condition404('Lokasi '. ConstantaHelpers::DATA_EMPTY);
       }
-
-      $status = isset($params['status']) ? $params['status'] : '';
+      $status = isset($params['status'])? $params['status'] : '';
       if(strlen($status) == 0){
         return ConditionHelpers::condition404('Status '. ConstantaHelpers::DATA_EMPTY);
-      }
-
-      $magangUuid = isset($params['uuid']) ? $params['uuid'] : '';
-      if(strlen($magangUuid) == 0){
-        // create new
-        $data = new KategoriModel();
+  }
+      $uuid = isset($params['uuid']) ? $params['uuid'] : '';
+      if(strlen($uuid) == 0){
+        $data = new LokasiModel();
         $data->dibuat_pada = FormatHelpers::IndonesiaFormatData();
       }else{
-        $data= KategoriModel::query()->where('uuid', $magangUuid)->first();
+        $data = LokasiModel::query()->where('uuid' ,$uuid)->first();
         $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
+
         if(is_null($data)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
         }
+
         if(!is_null($data->dihapus_pada)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
         }
       }
 
       $data->uuid = Str::uuid();
-      $data->kategori = Str::ucfirst($kategori);
-      $data->slug = Str::slug($kategori);
+      $data->lokasi = Str::ucfirst($lokasi);
+      $data->slug = Str::slug($lokasi);
       $data->status = $status;
       $data->save();
-      
+
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {
       return ResponseHelpers::Failed(400, $th->getMessage());
     }
+    
   }
   public function getDeleted($params){
+
     try {
-      /* It's a variable that is not used. */
-      $uuid = isset($params['uuid']) ? $params['uuid'] : '';
+      $uuid = isset($params['uuid'])? $params['uuid'] : '';
       if(strlen($uuid) == 0){
-        return ConditionHelpers::condition404('Uuid '. ConstantaHelpers::DATA_EMPTY); 
+        return ConditionHelpers::condition404('Lokasi '. ConstantaHelpers::DATA_EMPTY);
       }
 
-      $data = KategoriModel::query()->where('uuid' , $uuid)->first();
+      $data= LokasiModel::query()->where('uuid', $uuid)->first();
+
       if(is_null($data)){
-        return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
+      return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
       }
+
       if(!is_null($data->dihapus_pada)){
-        return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
+      return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
       }
+
       $data->dihapus_pada = FormatHelpers::IndonesiaFormatData();
       $data->save();
-      return ResponseHelpers::Success(200, ConstantaHelpers::DELETED_DATA, $data);
+
+      return ResponseHelpers::Success(200, ConstantaHelpers::DELETED_DATA, []);
     } catch (\Throwable $th) {
       return ResponseHelpers::Failed(400, $th->getMessage());
     }
