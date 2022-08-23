@@ -10,7 +10,6 @@ class ConditionHelpers{
     if(strlen($variable) == 0){
       return ResponseHelpers::Failed(404, $text . ConstantaHelpers::DATA_EMPTY);
     }
-    // return $variable;
   }
   
   public static function condition404($text){

@@ -37,11 +37,9 @@ class FavoritRepo {
         if(is_null($data)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
         }
-
         if(!is_null($data->dihapus_pada)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
         }
-
       }
       $data->uuid = Str::uuid();
       $data->favorit = Str::ucfirst($favorit);

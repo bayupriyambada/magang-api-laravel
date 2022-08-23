@@ -13,15 +13,30 @@
 |
 */
 
-$router->get('/kategori', 'Admin\KategoriMagangController@getList');
-$router->post('/kategori/save', 'Admin\KategoriMagangController@getSave');
-$router->delete('/kategori/{uuid}/deleted', 'Admin\KategoriMagangController@getDeleted');
-// lets try in postman
 
-$router->get('/lokasi', 'Admin\LokasiMagangController@getList');
-$router->post('/lokasi/save', 'Admin\LokasiMagangController@getSave');
-$router->delete('/lokasi/{uuid}/deleted', 'Admin\LokasiMagangController@getDeleted');
+$router->group(['prefix' => 'api'],function() use($router){
+  $router->group(['prefix' => 'users'], function() use($router){
+    $router->post('/login' , 'Admin\AuthController@getLogin');
+    $router->post('/register' , 'Admin\AuthController@getRegister');
+    
+    $router->group(['middleware' => 'auth:users'], function() use($router){
+      $router->get('/me' , 'Admin\AuthController@getMe');
+      $router->get('/dashboard-panel' , 'Admin\Dashboard\DashboardController@getDashboard');
 
-$router->get('/favorit', 'Admin\FavoritMagangController@getList');
-$router->post('/favorit/save', 'Admin\FavoritMagangController@getSave');
-$router->delete('/favorit/{uuid}/deleted', 'Admin\FavoritMagangController@getDeleted');
+      // data
+      $router->get('/kategori', 'Admin\KategoriMagangController@getList');
+      $router->post('/kategori/save', 'Admin\KategoriMagangController@getSave');
+      $router->delete('/kategori/{uuid}/deleted', 'Admin\KategoriMagangController@getDeleted');
+      // lets try in postman
+
+      $router->get('/lokasi', 'Admin\LokasiMagangController@getList');
+      $router->post('/lokasi/save', 'Admin\LokasiMagangController@getSave');
+      $router->delete('/lokasi/{uuid}/deleted', 'Admin\LokasiMagangController@getDeleted');
+
+      $router->get('/favorit', 'Admin\FavoritMagangController@getList');
+      $router->post('/favorit/save', 'Admin\FavoritMagangController@getSave');
+      $router->delete('/favorit/{uuid}/deleted', 'Admin\FavoritMagangController@getDeleted');
+
+    });
+  });
+});
