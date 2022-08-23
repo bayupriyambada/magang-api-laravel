@@ -7,6 +7,7 @@ use App\Helpers\ResponseHelpers;
 use App\Models\Magang\FavoritModel;
 use App\Models\Magang\KategoriModel;
 use App\Models\Magang\LokasiModel;
+use Illuminate\Http\Request;
 
 class DashboardRepo {
   

@@ -56,17 +56,17 @@ class FavoritRepo {
     try {
       $uuid = isset($params['uuid']) ? $params['uuid'] : '';
       if(strlen($uuid) == 0){
-      return ResponseHelpers::Failed(404, 'Uuid '. ConstantaHelpers::DATA_EMPTY);
+        return ResponseHelpers::Failed(404, 'Uuid '. ConstantaHelpers::DATA_EMPTY);
       }
 
       $data = FavoritModel::query()->where('uuid' , $uuid)->first();
 
       if(is_null($data)){
-      return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
+        return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
       }
 
       if(!is_null($data->dihapus_pada)){
-      return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
+        return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
       }
 
       $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
