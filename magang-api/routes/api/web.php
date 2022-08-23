@@ -13,9 +13,11 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
 
-require 'api/admin.php';
-require 'api/web.php';
+$router->group(['prefix' => 'api'], function() use($router){
+  $router->group(['prefix' => 'web'], function() use($router){
+    $router->get('/favorit', 'Web\PublikController@getFavorit');
+    $router->get('/lokasi', 'Web\PublikController@getLokasi');
+    $router->get('/kategori', 'Web\PublikController@getKategori');
+  });
+});

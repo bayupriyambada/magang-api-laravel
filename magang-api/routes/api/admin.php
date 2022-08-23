@@ -15,7 +15,7 @@
 
 
 $router->group(['prefix' => 'api'],function() use($router){
-  $router->group(['prefix' => 'users'], function() use($router){
+  $router->group(['prefix' => 'admin'], function() use($router){
     $router->post('/login' , 'Admin\AuthController@getLogin');
     $router->post('/register' , 'Admin\AuthController@getRegister');
     
