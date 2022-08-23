@@ -22,4 +22,8 @@ class PublikRepo {
     $data =KategoriModel::query()->data()->limit(15)->get()->makeHidden(['diubah_pada', 'dihapus_pada']);
     return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
   }
+  public function getLocation(){
+    $data =KategoriModel::query()->data()->limit(15)->get()->makeHidden(['diubah_pada', 'dihapus_pada']);
+    return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
+  }
 }
