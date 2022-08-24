@@ -19,12 +19,6 @@ class Member extends Model implements AuthenticatableContract, AuthorizableContr
     protected $primaryKey = 'member_id';
     public $timestamps = false;
     public $incrementing = false;
-    protected $keyType = 'string';
-
-    // protected $casts = [
-    //   'member_id' => 'string'
-    // ];
-
 
     /**
      * The attributes excluded from the model's JSON form.

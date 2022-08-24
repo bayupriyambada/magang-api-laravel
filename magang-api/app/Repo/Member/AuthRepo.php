@@ -67,7 +67,6 @@ class AuthRepo {
         return ResponseHelpers::Failed(404, 'Alamat ' . ConstantaHelpers::DATA_EMPTY);
       }
       $data = new Member();
-      $data->member_id = Str::uuid();
       $data->fullname = $fullName;
       $data->email = $email;
       $data->password = Hash::make($password);
