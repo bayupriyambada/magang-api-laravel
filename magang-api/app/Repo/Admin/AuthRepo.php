@@ -85,7 +85,7 @@ class AuthRepo {
     return response()->json(auth()->guard('users')->user());
   }
 
-  public function logout()
+  public function getLogout()
   {
     auth()->logout();
 

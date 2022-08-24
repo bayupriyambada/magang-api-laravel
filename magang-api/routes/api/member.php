@@ -22,6 +22,9 @@ $router->group(['prefix' => 'api'],function() use($router){
     $router->group(['middleware' => 'auth:members'], function() use($router){
       $router->get('/me' , 'Member\AuthController@getMe');
       // data
+      $router->get('/postingan-magang' , 'Member\PostinganMagangController@getList');
+      $router->post('/postingan-magang/save' , 'Member\PostinganMagangController@getSave');
+      $router->delete('/postingan-magang/{postinganMagangId}/delete' , 'Member\PostinganMagangController@getDeleted');
     });
   });
 });

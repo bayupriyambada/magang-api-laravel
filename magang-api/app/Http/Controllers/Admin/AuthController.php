@@ -16,28 +16,22 @@ class AuthController extends Controller{
   }
 
   public function getLogin(Request $request){
-    $data = [
-      'email'=> $request->input('email'),
-      'password'=> $request->input('password'),
-    ];
-
-    $data = $this->query->getLogin($request);
+    $data = $this->query->getLogin($request->only(['email', 'password']));
     return $data;
   }
   public function getRegister(Request $request){
-    $data = [
-      'fullname'=> $request->input('fullname'),
-      'email'=> $request->input('email'),
-      'password'=> $request->input('password'),
-      'jenis_kelamin'=> $request->input('jenis_kelamin'),
-      'alamat'=> $request->input('alamat'),
-    ];
-    $data = $this->query->getRegister($request);
+    $data = $this->query->getRegister($request->only([
+      'fullname', 'email', 'password', 'jenis_kelamin', 'alamat'
+    ]));
+    return $data;
+  }
+  public function getMe(){
+    $data = $this->query->getMe();
     return $data;
   }
 
-  public function getMe(){
-    $data = $this->query->getMe();
+  public function getLogout(){
+    $data = $this->query->getLogout();
     return $data;
   }
 }
