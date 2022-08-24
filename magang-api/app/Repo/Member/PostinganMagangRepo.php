@@ -2,11 +2,11 @@
 
 namespace App\Repo\Member;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Helpers\FormatHelpers;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\ConstantaHelpers;
-use App\Http\Controllers\Controller;
 use App\Models\Magang\PostinganMagangModel;
 
 class PostinganMagangRepo{
@@ -56,6 +56,8 @@ class PostinganMagangRepo{
         return ResponseHelpers::Failed(404, 'Tanggal Tutup '. ConstantaHelpers::DATA_EMPTY);
       }
 
+      $gambar = null;
+
       $postinganMagangId = isset($params['postingan_magang_id'])? $params['postingan_magang_id'] : '';
       if(strlen($postinganMagangId) == 0){
         $data = new PostinganMagangModel();
@@ -83,6 +85,13 @@ class PostinganMagangRepo{
       $data->tgl_buka = $tglBuka;
       $data->tgl_tutup = $tglTutup;
       $data->status = $status;
+
+      if (request()->hasFile('gambar')) {
+        $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
+        $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
+        request()->file('gambar')->move('postingan' ,$gambar);
+        $data->gambar = $gambar;
+      }
       $data->save();
 
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);

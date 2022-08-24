@@ -16,6 +16,14 @@ class PostinganMagangModel extends Model{
     ->selectRaw('*,ROW_NUMBER() over(ORDER BY postingan_magang_id desc) no_urut');
   }
 
+  public $appends = ['img_url'];
+
+  public function getImgUrlAttribute(){
+    return [
+      'url' => url('postingan') .'/'. $this->gambar,
+    ];
+  }
+
   public function member(){
     return $this->belongsTo('App\Models\Member' , 'member_id')->select('member_id','fullname','email');
   }

@@ -21,7 +21,7 @@ class PostinganMagangController extends Controller{
   }
   public function getSave(Request $request){
     $data = $this->query->getSave($request->only([
-      'judul', 'deskripsi', 'lokasi_id' , 'kategori_magang_id' , 'favorite_magang_id' ,'tgl_buka', 'tgl_tutup', 'status'
+      'judul', 'deskripsi', 'lokasi_id' , 'kategori_magang_id' ,'gambar', 'favorite_magang_id' ,'tgl_buka', 'tgl_tutup', 'status'
     ]));
     return $data;
   }
