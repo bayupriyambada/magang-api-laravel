@@ -11,7 +11,6 @@ class KategoriMagangController extends Controller{
   public function __construct(KategoriRepo $kategori){
     $this->query = $kategori;
   }
-
   public function getList(){
     $data = $this->query->getList();
     return $data;
@@ -21,11 +20,13 @@ class KategoriMagangController extends Controller{
     return $data;
   }
   public function getSave(Request $req){
-    $data = $this->query->getSave($req->only(['uuid', 'kategori', 'status']));
+    $data = $this->query->getSave($req->only(['kategori_magang_id', 'kategori']));
     return $data;
   }
-  public function getDeleted($uuid){
-    $data = $this->query->getDeleted(['uuid', $uuid]);
+  public function getDeleted($kategoriId){
+    $data = $this->query->getDeleted( $kategoriId);
     return $data;
   }
+
+  // apakah ini termasuk clean code kawan=kawan?????
 }

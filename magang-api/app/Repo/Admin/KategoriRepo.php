@@ -44,18 +44,13 @@ class KategoriRepo {
         return ConditionHelpers::condition404('Kategori '. ConstantaHelpers::DATA_EMPTY);
       }
 
-      $status = isset($params['status']) ? $params['status'] : '';
-      if(strlen($status) == 0){
-        return ConditionHelpers::condition404('Status '. ConstantaHelpers::DATA_EMPTY);
-      }
-
-      $magangUuid = isset($params['uuid']) ? $params['uuid'] : '';
-      if(strlen($magangUuid) == 0){
+      $kategoriId = isset($params['kategori_magang_id']) ? $params['kategori_magang_id'] : '';
+      if(strlen($kategoriId) == 0){
         // create new
         $data = new KategoriModel();
         $data->dibuat_pada = FormatHelpers::IndonesiaFormatData();
       }else{
-        $data= KategoriModel::query()->where('uuid', $magangUuid)->first();
+        $data= KategoriModel::query()->find($kategoriId);
         $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
         if(is_null($data)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
@@ -64,11 +59,8 @@ class KategoriRepo {
           return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
         }
       }
-
-      $data->uuid = Str::uuid();
       $data->kategori = Str::ucfirst($kategori);
       $data->slug = Str::slug($kategori);
-      $data->status = $status;
       $data->save();
       
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
@@ -79,12 +71,12 @@ class KategoriRepo {
   public function getDeleted($params){
     try {
       /* It's a variable that is not used. */
-      $uuid = isset($params['uuid']) ? $params['uuid'] : '';
-      if(strlen($uuid) == 0){
+      $kategorId = isset($params['kategori_magang_id']) ? $params['kategori_magang_id'] : '';
+      if(strlen($kategorId) == 0){
         return ConditionHelpers::condition404('Uuid '. ConstantaHelpers::DATA_EMPTY); 
       }
 
-      $data = KategoriModel::query()->where('uuid' , $uuid)->first();
+      $data = KategoriModel::query()->find($kategorId);
       if(is_null($data)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
       }

@@ -6,14 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class KategoriModel extends Model {
   protected $table = 'kategori_magang';
-  protected $primaryKey = 'uuid';
+  protected $primaryKey = 'kategori_magang_id';
   public $timestamps = false;
-  public $incrementing = false;
-  protected $keyType = 'string';
-
-  protected $casts = [
-    'uuid' => 'string'
-  ];
 
   // condition accessor camelCase in here when you used and repo data query
   public function scopeData($query){
@@ -21,6 +15,6 @@ class KategoriModel extends Model {
   ->whereNull('dihapus_pada')
   ->where('status' , 1)
   ->selectRaw(
-  '*, ROW_NUMBER() over(ORDER BY uuid DESC) no_urut');
+  '*, ROW_NUMBER() over(ORDER BY kategori_magang_id DESC) no_urut');
   }
 }

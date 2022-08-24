@@ -27,18 +27,18 @@ $router->group(['prefix' => 'api'],function() use($router){
       $router->get('/kategori', 'Admin\KategoriMagangController@getList');
       $router->get('/kategori/{slug}', 'Admin\KategoriMagangController@getShowData');
       $router->post('/kategori/save', 'Admin\KategoriMagangController@getSave');
-      $router->delete('/kategori/{uuid}/deleted', 'Admin\KategoriMagangController@getDeleted');
+      $router->delete('/kategori/{kategoriId}/delete', 'Admin\KategoriMagangController@getDeleted');
       // lets try in postman
 
       $router->get('/lokasi', 'Admin\LokasiMagangController@getList');
       $router->get('/lokasi/{slug}', 'Admin\LokasiMagangController@getShowData');
       $router->post('/lokasi/save', 'Admin\LokasiMagangController@getSave');
-      $router->delete('/lokasi/{uuid}/deleted', 'Admin\LokasiMagangController@getDeleted');
+      $router->delete('/lokasi/{lokasiId}/delete', 'Admin\LokasiMagangController@getDeleted');
 
       $router->get('/favorit', 'Admin\FavoritMagangController@getList');
       $router->get('/favorit/{slug}', 'Admin\FavoritMagangController@getShowData');
       $router->post('/favorit/save', 'Admin\FavoritMagangController@getSave');
-      $router->delete('/favorit/{uuid}/deleted', 'Admin\FavoritMagangController@getDeleted');
+      $router->delete('/favorit/{favoritId}/delete', 'Admin\FavoritMagangController@getDeleted');
 
     });
   });

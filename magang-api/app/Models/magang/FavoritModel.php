@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class FavoritModel extends Model {
 
-  protected $table = 'favorit_magang';
-  protected $primaryKey = 'uuid';
+  protected $table = 'favorite_magang';
+  protected $primaryKey = 'favorite_magang_id';
   public $timestamps = false;
-  public $incrementing = false;
-  protected $keyType = 'string';
+  // public $incrementing = false;
+  // protected $keyType = 'string';
 
-  protected $casts = [
-    'uuid' => 'string'
-  ];
+  // protected $casts = [
+  //   'uuid' => 'string'
+  // ];
 
   public function scopeData($query){
     return $query->whereNull('dihapus_pada')
-      ->selectRaw('*, ROW_NUMBER() over(ORDER BY dibuat_pada desc) no_urut');
+      ->selectRaw('*, ROW_NUMBER() over(ORDER BY favorite_magang_id desc) no_urut');
   }
 }

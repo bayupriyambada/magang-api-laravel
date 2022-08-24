@@ -27,12 +27,12 @@ class FavoritMagangController extends Controller {
   }
 
   public function getSave(Request $req){
-    $data = $this->query->getSave($req->only(['uuid' ,'favorit']));
+    $data = $this->query->getSave($req->only(['favorite_magang_id' ,'favorit']));
     return $data;
   }
 
-  public function getDeleted($uuid){
-    $data = $this->query->getDeleted($uuid);
+  public function getDeleted($favoritId){
+    $data = $this->query->getDeleted($favoritId);
     return $data;
   }
 }

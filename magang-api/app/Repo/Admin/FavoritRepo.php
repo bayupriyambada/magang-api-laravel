@@ -44,13 +44,12 @@ class FavoritRepo {
       if(strlen($favorit) == 0){
         return ConditionHelpers::condition404('Favorit ' . ConstantaHelpers::DATA_EMPTY);
       }
-
-      $uuid = isset($params['uuid']) ? $params['uuid'] : '';
-      if(strlen($uuid) == 0){
+      $id = isset($params['favorite_magang_id']) ? $params['favorite_magang_id'] : '';
+      if(strlen($id) == 0){
         $data = new FavoritModel();
         $data->dibuat_pada = FormatHelpers::IndonesiaFormatData();
       }else{
-        $data = FavoritModel::query()->where('uuid', $uuid)->first();
+        $data = FavoritModel::query()->find($id);
         $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
         if(is_null($data)){
           return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
@@ -59,7 +58,6 @@ class FavoritRepo {
           return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
         }
       }
-      $data->uuid = Str::uuid();
       $data->favorit = Str::ucfirst($favorit);
       $data->slug = Str::slug($favorit);
       $data->save();
@@ -70,20 +68,16 @@ class FavoritRepo {
     }
   }
   
-  public function getDeleted($params){
+  public function getDeleted($id){
     try {
-      $uuid = isset($params['uuid']) ? $params['uuid'] : '';
-      if(strlen($uuid) == 0){
-        return ResponseHelpers::Failed(404, 'Uuid '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $data = FavoritModel::query()->where('uuid' , $uuid)->first();
+      $data = FavoritModel::query()->find($id);
       if(is_null($data)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
       }
       if(!is_null($data->dihapus_pada)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
       }
-      $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
+      $data->dihapus_pada = FormatHelpers::IndonesiaFormatData();
       $data->save();
 
       return ResponseHelpers::Success(200, ConstantaHelpers::DELETED_DATA, []);
