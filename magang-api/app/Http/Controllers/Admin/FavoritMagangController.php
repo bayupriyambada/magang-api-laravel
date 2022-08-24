@@ -19,13 +19,15 @@ class FavoritMagangController extends Controller {
     $data = $this->query->getList();
     return $data;
   }
+  public function getShowData($slug){
+    $data = $this->query->getShowData( [
+      'slug' => $slug
+    ]);
+    return $data;
+  }
 
   public function getSave(Request $req){
-    $data = [
-      'uuid' => $req->input('uuid'),
-      'favorit' => $req->input('favorit'),
-    ];
-    $data = $this->query->getSave($req);
+    $data = $this->query->getSave($req->only(['uuid' ,'favorit']));
     return $data;
   }
 

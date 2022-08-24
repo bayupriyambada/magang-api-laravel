@@ -13,10 +13,15 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
 
-require 'api/admin.php';
-require 'api/member.php';
-require 'api/web.php';
+$router->group(['prefix' => 'api'],function() use($router){
+  $router->group(['prefix' => 'member'], function() use($router){
+    $router->post('/login' , 'Member\AuthController@getLogin');
+    $router->post('/register' , 'Member\AuthController@getRegister');
+    
+    $router->group(['middleware' => 'auth:members'], function() use($router){
+      $router->get('/me' , 'Member\AuthController@getMe');
+      // data
+    });
+  });
+});

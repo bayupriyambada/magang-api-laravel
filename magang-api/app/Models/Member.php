@@ -10,20 +10,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
+class Member extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable, HasFactory;
 
 
-    protected $table = 'users';
-    protected $primaryKey = 'user_uuid';
+    protected $table = 'member';
+    protected $primaryKey = 'member_id';
     public $timestamps = false;
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $casts = [
-        'uuid' => 'string'
-    ];
+    // protected $casts = [
+    //   'member_id' => 'string'
+    // ];
+
 
     /**
      * The attributes excluded from the model's JSON form.

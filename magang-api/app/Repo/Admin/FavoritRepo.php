@@ -10,12 +10,30 @@ use App\Helpers\ConstantaHelpers;
 use App\Models\Magang\FavoritModel;
 
 class FavoritRepo {
-
   public function getList(){
    try {
-     $data = FavoritModel::query()->data()->get();
-     return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
+    $s = request()->s;
+    $data = FavoritModel::query()->data()
+    ->when($s, function($data) use($s){
+      $data = $data->where('favorit','ILIKE', '%'. $s . '%')
+        ->orWhere('slug' , 'ILIKE', '%'. $s.'%');
+    })
+    ->get()->makeHidden(['diubah_pada' , 'dihapus_pada']);
+    return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
    } catch (\Throwable $th) {
+      return ResponseHelpers::Failed(400, $th->getMessage());
+    }
+  }
+
+  public function getShowData($slug){
+    try {
+      $data = FavoritModel::query()->where('slug', $slug)
+      ->first();
+      if(is_null($data)){
+        return ResponseHelpers::Success(404, ConstantaHelpers::DATA_NOT_FOUND, []);
+      }
+      return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
+    } catch (\Throwable $th) {
       return ResponseHelpers::Failed(400, $th->getMessage());
     }
   }
@@ -58,17 +76,13 @@ class FavoritRepo {
       if(strlen($uuid) == 0){
         return ResponseHelpers::Failed(404, 'Uuid '. ConstantaHelpers::DATA_EMPTY);
       }
-
       $data = FavoritModel::query()->where('uuid' , $uuid)->first();
-
       if(is_null($data)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_NOT_FOUND);
       }
-
       if(!is_null($data->dihapus_pada)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
       }
-
       $data->diubah_pada = FormatHelpers::IndonesiaFormatData();
       $data->save();
 

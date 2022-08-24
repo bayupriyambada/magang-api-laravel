@@ -13,8 +13,25 @@ class LokasiRepo {
 
   public function getList(){
     try {
-      $lokasi = LokasiModel::query()->data()->get();
+      $s = request()->s;
+      $lokasi = LokasiModel::query()->data()
+      ->when($s, function($data) use($s){
+      $data = $data->where('lokasi','ILIKE', '%'. $s . '%')
+      ->orWhere('slug' , 'ILIKE', '%'. $s.'%');
+      })
+      ->get()->makeHidden(['diubah_pada' , 'dihapus_pada']);
       return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $lokasi);
+    } catch (\Throwable $th) {
+      return ResponseHelpers::Failed(400, $th->getMessage());
+    }
+  }
+  public function getShowData($slug){
+    try {
+      $data = LokasiModel::query()->where('slug', $slug)->first();
+      if(is_null($data)){
+      return ResponseHelpers::Success(404, ConstantaHelpers::DATA_NOT_FOUND, []);
+      }
+      return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {
       return ResponseHelpers::Failed(400, $th->getMessage());
     }
