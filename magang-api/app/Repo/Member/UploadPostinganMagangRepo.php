@@ -9,7 +9,7 @@ use App\Helpers\ResponseHelpers;
 use App\Helpers\ConstantaHelpers;
 use App\Models\Magang\PostinganMagangModel;
 
-class PostinganMagangRepo{
+class UploadPostinganMagangRepo{
 
   public function getList(){
     try {

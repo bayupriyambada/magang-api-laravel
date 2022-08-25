@@ -39,7 +39,11 @@ $router->group(['prefix' => 'api'],function() use($router){
       $router->get('/favorit/{slug}', 'Admin\FavoritMagangController@getShowData');
       $router->post('/favorit/save', 'Admin\FavoritMagangController@getSave');
       $router->delete('/favorit/{favoritId}/delete', 'Admin\FavoritMagangController@getDeleted');
-
+      
+      $router->get('/teknologi', 'Admin\TeknologiMagangController@getList');
+      $router->get('/teknologi/{slug}', 'Admin\TeknologiMagangController@getShowData');
+      $router->post('/teknologi/save', 'Admin\TeknologiMagangController@getSave');
+      $router->delete('/teknologi/{favoritId}/delete', 'Admin\TeknologiMagangController@getDeleted');
     });
   });
 });

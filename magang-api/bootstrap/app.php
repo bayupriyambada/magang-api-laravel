@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -26,6 +29,9 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 
 $app->withEloquent();
+
+class_alias('JD\Cloudder\Facades\Cloudder', 'Cloudder');
+// class_alias(CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class, 'Cloudinary');
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +104,8 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(JD\Cloudder\CloudderServiceProvider::class);
+// $app->register(CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
@@ -110,6 +118,12 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+// Cloudinary::config(array(
+//     'cloud_name' => env('CLOUDINARY_CLOUD_NAME', true),
+//     // 'api_key' => env('CLOUDINARY_API_KEY', true),
+//     // 'api_secret' => env('CLOUDINARY_API_SECRET', true)
+// ));
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',

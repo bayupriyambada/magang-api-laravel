@@ -16,13 +16,11 @@ class AuthController extends Controller{
   }
 
   public function getLogin(Request $request){
-    $data = $this->query->getLogin($request->only(['email', 'password']));
+    $data = $this->query->getLogin($request);
     return $data;
   }
   public function getRegister(Request $request){
-    $data = $this->query->getRegister($request->only([
-      'fullname', 'email', 'password', 'jenis_kelamin', 'alamat'
-    ]));
+    $data = $this->query->getRegister($request);
     return $data;
   }
   public function getMe(){

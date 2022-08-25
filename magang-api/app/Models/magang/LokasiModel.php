@@ -17,7 +17,6 @@ class LokasiModel extends Model{
   // ];
   public function scopeData($query){
     return $query->whereNull('dihapus_pada')
-      ->where('status', 1)
       ->selectRaw('*,ROW_NUMBER() over(ORDER BY lokasi_id desc) no_urut');
   }
 }
