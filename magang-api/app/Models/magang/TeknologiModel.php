@@ -14,5 +14,5 @@ class TeknologiModel extends Model{
       ->selectRaw('*,ROW_NUMBER() over(ORDER BY teknologi_magang_id desc) no_urut');
   }
 
-  // protected $guard = [];
+  protected $fillable = ['teknologi' ,'slug' ,'dibuat_pada', 'dihapus_pada', 'diubah_pada'];
 }
