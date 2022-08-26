@@ -9,7 +9,11 @@ use App\Models\Magang\PostinganMagangModel;
 
 class PostinganMagangRepo {
   public function getData(){
-    $data = PostinganMagangResource::collection(PostinganMagangModel::get());
+    $data = PostinganMagangModel::query()
+    ->search()
+    ->data()
+    ->get();
+    // $data = PostinganMagangResource::collection(PostinganMagangModel::get());
     return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $data);
   }
 

@@ -30,7 +30,8 @@ class PostinganMagangRepo{
         'status' => 'required',
         'lokasi_id' => 'required',
         'kategori_magang_id' => 'required',
-        'teknologi_magang_id.*' => 'required',
+        'teknologi_magang_id' => 'required',
+        'teknologi' => 'required',
         'tgl_buka' => 'required',
         ], [
         'judul.required' => 'Judul ' .ConstantaHelpers::DATA_EMPTY,
@@ -38,6 +39,7 @@ class PostinganMagangRepo{
         'status.required' => 'Status ' .ConstantaHelpers::DATA_EMPTY,
         'lokasi_id.required' => 'Lokasi ' .ConstantaHelpers::DATA_EMPTY,
         'kategori_magang_id.required' => 'Kategori ' .ConstantaHelpers::DATA_EMPTY,
+        'teknologi_magang_id.required' => 'Teknologi ' .ConstantaHelpers::DATA_EMPTY,
         'teknologi_magang_id.required' => 'Teknologi ' .ConstantaHelpers::DATA_EMPTY,
         'tgl_buka.required' => 'Tanggal Buka ' .ConstantaHelpers::DATA_EMPTY,
       ]);
@@ -71,19 +73,31 @@ class PostinganMagangRepo{
       $data->tgl_buka = $params->tgl_buka;
       $data->status = (int)$params->status;
 
-      
-       if (request()->hasFile('gambar')) {
-         $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
-         $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
-         request()->file('gambar')->move('postingan' ,$gambar);
+      // $finalArray = [];
+      // foreach($data as $key=>$value){
+      //   array_push($finalArray, [
+      //        $key=>$value['teknologi']
+      //     ]
+      //   );
+      // };
 
-         $current = base_path('postingan') .'/'. $data->gambar;
-         if(file_exists($current)){
-           unlink($current);
-         }
-         $data->gambar = $gambar;
-       }
-      $data->save();
+      $data->teknologi = json_encode($data);
+      // $data =PostinganMagangModel::insert($finalArray);
+      return$data;
+
+      
+      //  if (request()->hasFile('gambar')) {
+      //    $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
+      //    $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
+      //    request()->file('gambar')->move('postingan' ,$gambar);
+
+      //    $current = base_path('postingan') .'/'. $data->gambar;
+      //    if(file_exists($current)){
+      //      unlink($current);
+      //    }
+      //    $data->gambar = $gambar;
+      //  }
+      // $data->save();
 
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {

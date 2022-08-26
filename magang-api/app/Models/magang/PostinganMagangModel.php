@@ -2,6 +2,7 @@
 
 namespace App\Models\Magang;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class PostinganMagangModel extends Model{
@@ -12,12 +13,12 @@ class PostinganMagangModel extends Model{
   public function scopeData($query){
     return $query->whereNull('dihapus_pada')
     ->where('status', 1)
-    ->with(['member','favorit','lokasi','kategori'])
+    ->with(['member','lokasi','kategori', 'teknologi'])
     ->selectRaw('*,ROW_NUMBER() over(ORDER BY postingan_magang_id desc) no_urut');
   }
   public function scopeSlug($query,$slug){
     return $query->where('slug' ,$slug)
-    ->with(['member','favorit','lokasi','kategori']);
+    ->with(['member','lokasi','kategori']);
   }
 
   public $appends = ['img_url'];
@@ -28,16 +29,36 @@ class PostinganMagangModel extends Model{
     ];
   }
 
+  public function scopeSearch($value){
+    return $value->when(request()->s , function($s){
+    $s->where('judul', 'ilike', '%'. request()->s . '%')
+    ->orWhere('slug', 'ilike', '%'. request()->s . '%');
+    })
+    ->whereRelation('lokasi', function($l){
+    $l->where('lokasi', 'ilike', '%'. request()->l . '%')
+    ->orWhere('slug', 'ilike', '%'. request()->l . '%');
+    })
+    ->whereRelation('kategori', function($k){
+    $k->where('kategori', 'ilike', '%'. request()->k . '%')
+    ->orWhere('slug', 'ilike', '%'. request()->k . '%');
+    })
+    ->whereRelation('teknologi', function($t){
+    $t->where('teknologi', 'ilike', '%'. request()->t. '%')
+    ->orWhere('slug', 'ilike', '%'. request()->t . '%');
+    });
+  }
+  
+
   public function member(){
     return $this->belongsTo('App\Models\Member' , 'member_id')->select('member_id','fullname','email');
-  }
-  public function favorit(){
-    return $this->belongsTo('App\Models\magang\FavoritModel' , 'favorite_magang_id')->select('favorite_magang_id','favorit','slug');
   }
   public function lokasi(){
     return $this->belongsTo('App\Models\magang\LokasiModel' , 'lokasi_id')->select('lokasi_id','lokasi','slug');
   }
   public function kategori(){
     return $this->belongsTo('App\Models\magang\KategoriModel' , 'kategori_magang_id')->select('kategori_magang_id','kategori', 'slug');
+  }
+  public function teknologi(){
+    return $this->belongsTo('App\Models\magang\TeknologiModel' , 'teknologi_magang_id')->select('teknologi_magang_id','teknologi', 'slug');
   }
 }
