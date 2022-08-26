@@ -15,19 +15,15 @@ class LokasiMagangController extends Controller{
     $this->query = $repo;
   }
   public function getList(){
-    $data =$this->query->getList();
-    return $data;
+    return $this->query->getList();
   }
   public function getShowData($slug){
-    $data = $this->query->getShowData($slug);
-    return $data;
+    return $this->query->getShowData($slug);
   }
   public function getSave(Request $req){
-    $data = $this->query->getSave($req->only(['lokasi_id','lokasi']));
-    return $data;
+    return $this->query->getSave($req);
   }
   public function getDeleted($lokasiId){
-    $data = $this->query->getDeleted($lokasiId);
-    return $data;
+    return $this->query->getDeleted($lokasiId);
   }
 }

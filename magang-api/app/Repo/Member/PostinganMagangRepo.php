@@ -82,22 +82,20 @@ class PostinganMagangRepo{
       // };
 
       $data->teknologi = json_encode($data);
-      // $data =PostinganMagangModel::insert($finalArray);
-      return$data;
 
       
-      //  if (request()->hasFile('gambar')) {
-      //    $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
-      //    $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
-      //    request()->file('gambar')->move('postingan' ,$gambar);
+       if (request()->hasFile('gambar')) {
+         $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
+         $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
+         request()->file('gambar')->move('postingan' ,$gambar);
 
-      //    $current = base_path('postingan') .'/'. $data->gambar;
-      //    if(file_exists($current)){
-      //      unlink($current);
-      //    }
-      //    $data->gambar = $gambar;
-      //  }
-      // $data->save();
+         $current = base_path('postingan') .'/'. $data->gambar;
+         if(file_exists($current)){
+           unlink($current);
+         }
+         $data->gambar = $gambar;
+       }
+      $data->save();
 
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {
@@ -108,11 +106,11 @@ class PostinganMagangRepo{
     try {
       $postinganMagangId = isset($params['postingan_magang_id']) ? $params['postingan_magang_id']: '';
       if(strlen($postinganMagangId) == 0){
-      return ResponseHelpers::Failed(404, 'Postingan '.ConstantaHelpers::DATA_EMPTY);
+        return ResponseHelpers::Failed(404, 'Postingan '.ConstantaHelpers::DATA_EMPTY);
       }
       $data = PostinganMagangModel::query()->find($postinganMagangId);
       if(is_null($data)){
-      return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_EMPTY);
+        return ResponseHelpers::Failed(404, ConstantaHelpers::DATA_EMPTY);
       }
       if(!is_null($data->dihapus_pada)){
         return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);

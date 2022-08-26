@@ -13,12 +13,12 @@ class PostinganMagangController extends Controller{
   {
     $this->query =$repo;
   }
-  public function getData(){
-    $data = $this->query->getData();
+  public function getAll(){
+    $data = $this->query->getAllPostsIntern();
     return $data;
   }
   public function getSlug($slug){
-    $data = $this->query->getSlug($slug);
+    $data = $this->query->getSlugPostsIntern($slug);
     return $data;
   }
 }

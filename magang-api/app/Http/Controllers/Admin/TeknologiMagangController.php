@@ -12,19 +12,15 @@ class TeknologiMagangController extends Controller{
     $this->query = $repo;
   }
   public function getList(){
-    $data = $this->query->getList();
-    return $data;
+    return $this->query->getList();
   }
   public function getShowData($slug){
-    $data = $this->query->getShowData($slug);
-    return $data;
+    return $this->query->getShowData($slug);
   }
   public function getSave(Request $req){
-    $data = $this->query->getSave($req);
-    return $data;
+    return $this->query->getSave($req);
   }
   public function getDeleted($kategoriId){
-    $data = $this->query->getDeleted( $kategoriId);
-    return $data;
+    return $this->query->getDeleted( $kategoriId);
   }
 }

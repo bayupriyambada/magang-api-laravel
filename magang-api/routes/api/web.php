@@ -21,7 +21,7 @@ $router->group(['prefix' => 'api'], function() use($router){
     $router->get('/kategori', 'Web\PublikController@getKategori');
 
     // postingan magang
-    $router->get('/postingan-magang', 'Web\PostinganMagangController@getData');
+    $router->get('/postingan-magang', 'Web\PostinganMagangController@getAll');
     $router->get('/postingan-magang/{slug}', 'Web\PostinganMagangController@getSlug');
   });
 });
