@@ -23,6 +23,7 @@ class UploadPostinganMagangRepo{
   
   public function getSave($params){
     try {
+
       $judul = isset($params['judul']) ? $params['judul'] : '';
       if(strlen($judul) == 0){
         return ResponseHelpers::Failed(404, 'Judul '. ConstantaHelpers::DATA_EMPTY);

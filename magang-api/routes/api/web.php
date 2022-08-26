@@ -19,5 +19,9 @@ $router->group(['prefix' => 'api'], function() use($router){
     $router->get('/favorit', 'Web\PublikController@getFavorit');
     $router->get('/lokasi', 'Web\PublikController@getLokasi');
     $router->get('/kategori', 'Web\PublikController@getKategori');
+
+    // postingan magang
+    $router->get('/postingan-magang', 'Web\PostinganMagangController@getData');
+    $router->get('/postingan-magang/{slug}', 'Web\PostinganMagangController@getSlug');
   });
 });

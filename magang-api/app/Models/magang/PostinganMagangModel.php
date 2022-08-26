@@ -15,6 +15,10 @@ class PostinganMagangModel extends Model{
     ->with(['member','favorit','lokasi','kategori'])
     ->selectRaw('*,ROW_NUMBER() over(ORDER BY postingan_magang_id desc) no_urut');
   }
+  public function scopeSlug($query,$slug){
+    return $query->where('slug' ,$slug)
+    ->with(['member','favorit','lokasi','kategori']);
+  }
 
   public $appends = ['img_url'];
 

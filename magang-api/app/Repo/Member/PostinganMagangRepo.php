@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Helpers\FormatHelpers;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\ConstantaHelpers;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Magang\PostinganMagangModel;
 
 class PostinganMagangRepo{
@@ -23,41 +24,27 @@ class PostinganMagangRepo{
   
   public function getSave($params){
     try {
-      $judul = isset($params['judul']) ? $params['judul'] : '';
-      if(strlen($judul) == 0){
-        return ResponseHelpers::Failed(404, 'Judul '. ConstantaHelpers::DATA_EMPTY);
+      $validator = Validator::make($params->all(), [
+        'judul' => 'required|max:255',
+        'deskripsi' => 'required',
+        'status' => 'required',
+        'lokasi_id' => 'required',
+        'kategori_magang_id' => 'required',
+        'teknologi_magang_id.*' => 'required',
+        'tgl_buka' => 'required',
+        ], [
+        'judul.required' => 'Judul ' .ConstantaHelpers::DATA_EMPTY,
+        'deskripsi.required' => 'Deskripsi ' .ConstantaHelpers::DATA_EMPTY,
+        'status.required' => 'Status ' .ConstantaHelpers::DATA_EMPTY,
+        'lokasi_id.required' => 'Lokasi ' .ConstantaHelpers::DATA_EMPTY,
+        'kategori_magang_id.required' => 'Kategori ' .ConstantaHelpers::DATA_EMPTY,
+        'teknologi_magang_id.required' => 'Teknologi ' .ConstantaHelpers::DATA_EMPTY,
+        'tgl_buka.required' => 'Tanggal Buka ' .ConstantaHelpers::DATA_EMPTY,
+      ]);
+      if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
       }
-      $deskripsi = isset($params['deskripsi']) ? $params['deskripsi'] : '';
-      if(strlen($deskripsi) == 0){
-        return ResponseHelpers::Failed(404, 'Deskripsi '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $status = isset($params['status']) ? $params['status'] : '';
-      if(strlen($status) == 0){
-        return ResponseHelpers::Failed(404, 'Status '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $lokasId = isset($params['lokasi_id']) ? $params['lokasi_id'] : '';
-      if(strlen($lokasId) == 0){
-        return ResponseHelpers::Failed(404, 'Lokasi '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $kategoriMagangId = isset($params['kategori_magang_id']) ? $params['kategori_magang_id'] : '';
-      if(strlen($kategoriMagangId) == 0){
-        return ResponseHelpers::Failed(404, 'Kategori '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $favoriteMagangId = isset($params['favorite_magang_id']) ? $params['favorite_magang_id'] : '';
-      if(strlen($favoriteMagangId) == 0){
-        return ResponseHelpers::Failed(404, 'Favorite '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $tglBuka = isset($params['tgl_buka']) ? $params['tgl_buka'] : '';
-      if(strlen($tglBuka) == 0){
-        return ResponseHelpers::Failed(404, 'Tanggal Buka '. ConstantaHelpers::DATA_EMPTY);
-      }
-      $tglTutup = isset($params['tgl_tutup']) ? $params['tgl_tutup'] : '';
-      if(strlen($tglTutup) == 0){
-        return ResponseHelpers::Failed(404, 'Tanggal Tutup '. ConstantaHelpers::DATA_EMPTY);
-      }
-
       $gambar = null;
-
       $postinganMagangId = isset($params['postingan_magang_id'])? $params['postingan_magang_id'] : '';
       if(strlen($postinganMagangId) == 0){
         $data = new PostinganMagangModel();
@@ -75,30 +62,30 @@ class PostinganMagangRepo{
           return ResponseHelpers::Failed(404, ConstantaHelpers::DELETED_DATA_FOUND);
         }
       }
-
-      $data->judul = $judul;
-      $data->slug = Str::slug($judul);
-      $data->deskripsi = $deskripsi;
-      $data->lokasi_id = $lokasId;
-      $data->kategori_magang_id = $kategoriMagangId;
-      $data->favorite_magang_id = $favoriteMagangId;
-      $data->tgl_buka = $tglBuka;
-      $data->tgl_tutup = $tglTutup;
-      $data->status = $status;
+      $data->judul = $params->judul;
+      $data->slug = Str::slug($params->judul);
+      $data->deskripsi = $params->deskripsi;
+      $data->lokasi_id = $params->lokasi_id;
+      $data->kategori_magang_id = $params->kategori_magang_id;
+      $data->teknologi_magang_id = $params->teknologi_magang_id;
+      $data->tgl_buka = $params->tgl_buka;
+      $data->status = (int)$params->status;
 
       
-      if (request()->hasFile('gambar')) {
-        $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
-        $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
-        request()->file('gambar')->move('postingan' ,$gambar);
+       if (request()->hasFile('gambar')) {
+         $fullname = Str::replace(' ', '-',Str::lower(auth()->guard('members')->user()->fullname));
+         $gambar = $fullname. '-'. Carbon::now()->format('Ymdhis'). '.'.'jpg';
+         request()->file('gambar')->move('postingan' ,$gambar);
 
-        $current = base_path('postingan') .'/'. $data->gambar;
-        if(file_exists($current)){
-          unlink($current);
-        }
-        $data->gambar = $gambar;
-      }
+         $current = base_path('postingan') .'/'. $data->gambar;
+         if(file_exists($current)){
+           unlink($current);
+         }
+         $data->gambar = $gambar;
+       }
       $data->save();
+      // $result = array_merge($data);
+      // dd($result);
 
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {
