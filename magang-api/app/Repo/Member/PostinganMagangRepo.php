@@ -84,8 +84,6 @@ class PostinganMagangRepo{
          $data->gambar = $gambar;
        }
       $data->save();
-      // $result = array_merge($data);
-      // dd($result);
 
       return ResponseHelpers::Success(200, ConstantaHelpers::SAVE_DATA, $data);
     } catch (\Throwable $th) {
