@@ -6,26 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Repo\Member\PostinganMagangRepo;
 use Illuminate\Http\Request;
 
-class PostinganMagangController extends Controller{
-
+class PostinganMagangController extends Controller
+{
   protected $query;
 
   public function __construct(PostinganMagangRepo $repo)
   {
     $this->query = $repo;
   }
-
-  public function getList(){
-    $data = $this->query->getList();
-    return $data;
+  public function getList()
+  {
+    return $this->query->getAllPostsIntern();
   }
-  public function getSave(Request $request){
-    $data = $this->query->getSave($request);
-    return $data;
+  public function getSave(Request $request)
+  {
+    return $this->query->getSavePostsIntern($request);
   }
-
-  public function getDeleted($postinganMagangId){
-    $data = $this->query->getDeleted($postinganMagangId);
-    return $data;
+  public function getSlug($slug)
+  {
+    return $this->query->getSlugPostsIntern($slug);
+  }
+  public function getDeleted($postsInternId)
+  {
+    return $this->query->getDeletePostsIntern($postsInternId);
   }
 }

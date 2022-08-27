@@ -14,36 +14,36 @@
 */
 
 
-$router->group(['prefix' => 'api'],function() use($router){
-  $router->group(['prefix' => 'admin'], function() use($router){
-    $router->post('/login' , 'Admin\AuthController@getLogin');
-    $router->post('/register' , 'Admin\AuthController@getRegister');
-    
-    $router->group(['middleware' => 'auth:users'], function() use($router){
-      $router->get('/me' , 'Admin\AuthController@getMe');
-      $router->get('/dashboard-panel' , 'Admin\Dashboard\DashboardController@getDashboard');
+$router->group(['prefix' => 'api'], function () use ($router) {
+  $router->group(['prefix' => 'admin'], function () use ($router) {
+    $router->post('/login', 'Admin\AuthController@getLogin');
+    $router->post('/register', 'Admin\AuthController@getRegister');
+
+    $router->group(['middleware' => 'auth:users'], function () use ($router) {
+      $router->get('/me', 'Admin\AuthController@getMe');
+      $router->get('/dashboard-panel', 'Admin\Dashboard\DashboardController@getDashboard');
 
       // data
-      $router->get('/kategori', 'Admin\KategoriMagangController@getList');
-      $router->get('/kategori/{slug}', 'Admin\KategoriMagangController@getShowData');
-      $router->post('/kategori/save', 'Admin\KategoriMagangController@getSave');
-      $router->delete('/kategori/{kategoriId}/delete', 'Admin\KategoriMagangController@getDeleted');
+      $router->get('/categories', 'Admin\KategoriMagangController@getList');
+      $router->get('/categories/{slug}', 'Admin\KategoriMagangController@getShowData');
+      $router->post('/categories/save', 'Admin\KategoriMagangController@getSave');
+      $router->delete('/categories/{categoryId}/delete', 'Admin\KategoriMagangController@getDeleted');
       // lets try in postman
 
-      $router->get('/lokasi', 'Admin\LokasiMagangController@getList');
-      $router->get('/lokasi/{slug}', 'Admin\LokasiMagangController@getShowData');
-      $router->post('/lokasi/save', 'Admin\LokasiMagangController@getSave');
-      $router->delete('/lokasi/{lokasiId}/delete', 'Admin\LokasiMagangController@getDeleted');
+      $router->get('/location', 'Admin\LokasiMagangController@getList');
+      $router->get('/location/{slug}', 'Admin\LokasiMagangController@getShowData');
+      $router->post('/location/save', 'Admin\LokasiMagangController@getSave');
+      $router->delete('/location/{lokasiId}/delete', 'Admin\LokasiMagangController@getDeleted');
 
-      $router->get('/favorit', 'Admin\FavoritMagangController@getList');
-      $router->get('/favorit/{slug}', 'Admin\FavoritMagangController@getShowData');
-      $router->post('/favorit/save', 'Admin\FavoritMagangController@getSave');
-      $router->delete('/favorit/{favoritId}/delete', 'Admin\FavoritMagangController@getDeleted');
-      
-      $router->get('/teknologi', 'Admin\TeknologiMagangController@getList');
-      $router->get('/teknologi/{slug}', 'Admin\TeknologiMagangController@getShowData');
-      $router->post('/teknologi/save', 'Admin\TeknologiMagangController@getSave');
-      $router->delete('/teknologi/{favoritId}/delete', 'Admin\TeknologiMagangController@getDeleted');
+      $router->get('/favorite', 'Admin\FavoritMagangController@getList');
+      $router->get('/favorite/{slug}', 'Admin\FavoritMagangController@getShowData');
+      $router->post('/favorite/save', 'Admin\FavoritMagangController@getSave');
+      $router->delete('/favorite/{favoritId}/delete', 'Admin\FavoritMagangController@getDeleted');
+
+      $router->get('/technology', 'Admin\TeknologiMagangController@getList');
+      $router->get('/technology/{slug}', 'Admin\TeknologiMagangController@getShowData');
+      $router->post('/technology/save', 'Admin\TeknologiMagangController@getSave');
+      $router->delete('/technology/{technologyId}/delete', 'Admin\TeknologiMagangController@getDeleted');
     });
   });
 });
