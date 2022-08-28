@@ -2,8 +2,10 @@
 
 namespace App\Helpers;
 
-class ResponseHelpers {
-  public static function Success($code, $message, $data){
+class ResponseHelpers
+{
+  public static function Success($code, $message, $data)
+  {
     //i  will return json multiple data data
     return response()->json([
       'code' => $code,
@@ -14,7 +16,8 @@ class ResponseHelpers {
       // data in here object return response maybe array or object, but in return here execution array.
     ]);
   }
-  public static function Failed($code, $message){
+  public static function Failed($code, $message)
+  {
     //i  will return json failed with th try catch
     return response()->json([
       'code' => $code,
@@ -22,5 +25,10 @@ class ResponseHelpers {
       'message' => $message,
       //and message and text field notification failed , example : "Ups! Sorry maybe code wrong, cek please your code"
     ]);
+  }
+
+  public static function Validation($message)
+  {
+    return $message . ' ' . ConstantaHelpers::DATA_EMPTY;
   }
 }

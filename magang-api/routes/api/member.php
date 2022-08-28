@@ -22,10 +22,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth:members'], function () use ($router) {
       $router->get('/me', 'Member\AuthController@getMe');
       // data
-      $router->get('/posts-intern', 'Member\PostinganMagangController@getList');
-      $router->post('/posts-intern/save', 'Member\PostinganMagangController@getSave');
-      $router->get('/posts-intern/{slug}', 'Member\PostinganMagangController@getSlug');
-      $router->delete('/posts-intern/{postsInternId}/delete', 'Member\PostinganMagangController@getDeleted');
+
+      $router->group(['prefix' => 'posts-intern'], function () use ($router) {
+        $router->get('/', 'Member\PostsInternController@getList');
+        $router->post('/save', 'Member\PostsInternController@getSave');
+        $router->get('/{slug}/detail', 'Member\PostsInternController@getSlug');
+        $router->delete('/{postsInternId}/delete', 'Member\PostsInternController@getDeleted');
+      });
     });
   });
 });

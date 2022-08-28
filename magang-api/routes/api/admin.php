@@ -24,26 +24,38 @@ $router->group(['prefix' => 'api'], function () use ($router) {
       $router->get('/dashboard-panel', 'Admin\Dashboard\DashboardController@getDashboard');
 
       // data
-      $router->get('/categories', 'Admin\KategoriMagangController@getList');
-      $router->get('/categories/{slug}', 'Admin\KategoriMagangController@getShowData');
-      $router->post('/categories/save', 'Admin\KategoriMagangController@getSave');
-      $router->delete('/categories/{categoryId}/delete', 'Admin\KategoriMagangController@getDeleted');
-      // lets try in postman
 
-      $router->get('/location', 'Admin\LokasiMagangController@getList');
-      $router->get('/location/{slug}', 'Admin\LokasiMagangController@getShowData');
-      $router->post('/location/save', 'Admin\LokasiMagangController@getSave');
-      $router->delete('/location/{lokasiId}/delete', 'Admin\LokasiMagangController@getDeleted');
+      $router->group(['prefix' => 'categories'], function () use ($router) {
+        $router->get('/', 'Admin\CategoriesInternController@getList');
+        $router->get('/{slug}', 'Admin\CategoriesInternController@getShowData');
+        $router->post('/save', 'Admin\CategoriesInternController@getSave');
+        $router->delete('/{categoryId}/delete', 'Admin\CategoriesInternController@getDeleted');
 
-      $router->get('/favorite', 'Admin\FavoritMagangController@getList');
-      $router->get('/favorite/{slug}', 'Admin\FavoritMagangController@getShowData');
-      $router->post('/favorite/save', 'Admin\FavoritMagangController@getSave');
-      $router->delete('/favorite/{favoritId}/delete', 'Admin\FavoritMagangController@getDeleted');
+        // data delete to trash in db
+        $router->get('/delete-permanent', 'Admin\CategoriesInternController@getDataTrash');
+        $router->delete('/{categoryId}/delete-permanent', 'Admin\CategoriesInternController@getDeletePermanent');
+      });
 
-      $router->get('/technology', 'Admin\TeknologiMagangController@getList');
-      $router->get('/technology/{slug}', 'Admin\TeknologiMagangController@getShowData');
-      $router->post('/technology/save', 'Admin\TeknologiMagangController@getSave');
-      $router->delete('/technology/{technologyId}/delete', 'Admin\TeknologiMagangController@getDeleted');
+      $router->group(['prefix' => 'location'], function () use ($router) {
+        $router->get('/', 'Admin\LocationController@getList');
+        $router->get('/{slug}', 'Admin\LocationController@getShowData');
+        $router->post('/save', 'Admin\LocationController@getSave');
+        $router->delete('/{locationId}/delete', 'Admin\LocationController@getDeleted');
+      });
+
+      $router->group(['prefix' => 'technology'], function () use ($router) {
+        $router->get('/', 'Admin\TeknologiMagangController@getList');
+        $router->get('/{slug}', 'Admin\TeknologiMagangController@getShowData');
+        $router->post('/save', 'Admin\TeknologiMagangController@getSave');
+        $router->delete('/{technologyId}/delete', 'Admin\TeknologiMagangController@getDeleted');
+      });
+      $router->group(['prefix' => 'qualification'], function () use ($router) {
+        $router->get('/', 'Admin\QualificationController@getList');
+        $router->post('/save', 'Admin\QualificationController@getSave');
+        $router->delete('/{qualificationId}/delete', 'Admin\QualificationController@getDeleted');
+        $router->get('/delete-permanent', 'Admin\QualificationController@getDataTrash');
+        $router->delete('/{qualificationId}/delete-permanent', 'Admin\QualificationController@getDeletePermanent');
+      });
     });
   });
 });
