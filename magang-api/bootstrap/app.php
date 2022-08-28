@@ -3,7 +3,7 @@
 
 
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -68,6 +68,7 @@ $app->singleton(
 $app->configure('app');
 $app->configure('cors');
 $app->configure('jwt');
+$app->configure('queue');
 
 /*
 |--------------------------------------------------------------------------
@@ -119,16 +120,10 @@ $app->register(JD\Cloudder\CloudderServiceProvider::class);
 |
 */
 
-// Cloudinary::config(array(
-//     'cloud_name' => env('CLOUDINARY_CLOUD_NAME', true),
-//     // 'api_key' => env('CLOUDINARY_API_KEY', true),
-//     // 'api_secret' => env('CLOUDINARY_API_SECRET', true)
-// ));
-
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;

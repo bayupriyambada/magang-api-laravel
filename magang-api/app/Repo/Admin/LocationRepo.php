@@ -15,11 +15,11 @@ class LocationRepo
   public function getAllLocation()
   {
     try {
-      $s = request()->s;
+
       $lokasi = LocationModel::query()->data()
-        ->when($s, function ($data) use ($s) {
-          $data = $data->where('location', 'ILIKE', '%' . $s . '%')
-            ->orWhere('slug', 'ILIKE', '%' . $s . '%');
+        ->when(request()->search, function ($data) {
+          $data = $data->where('location', 'ILIKE', '%' . request()->search . '%')
+            ->orWhere('slug', 'ILIKE', '%' . request()->search . '%');
         })
         ->get()->makeHidden(['diubah_pada', 'dihapus_pada']);
       return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $lokasi);

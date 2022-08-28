@@ -5,13 +5,14 @@ namespace App\Repo\Web;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\ConstantaHelpers;
 use App\Models\Magang\PostinganMagangModel;
+use App\Models\Magang\PostsInternModel;
 
 class PostinganMagangRepo
 {
 
   public function getAllPostsIntern()
   {
-    $posts = PostinganMagangModel::query()
+    $posts = PostsInternModel::query()
       ->search()->data()->get();
     return ResponseHelpers::Success(200, ConstantaHelpers::GET_DATA, $posts);
   }
@@ -19,7 +20,7 @@ class PostinganMagangRepo
   public function getSlugPostsIntern($slug)
   {
     try {
-      $postsSlug = PostinganMagangModel::query()
+      $postsSlug = PostsInternModel::query()
         ->slug($slug)
         ->first()
         ->makeHidden(['diubah_pada', 'dihapus_pada']);

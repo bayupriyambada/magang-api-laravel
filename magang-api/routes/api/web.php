@@ -14,14 +14,14 @@
 */
 
 
-$router->group(['prefix' => 'api'], function() use($router){
-  $router->group(['prefix' => 'web'], function() use($router){
+$router->group(['prefix' => 'api'], function () use ($router) {
+  $router->group(['prefix' => 'web'], function () use ($router) {
     $router->get('/favorit', 'Web\PublikController@getFavorit');
     $router->get('/lokasi', 'Web\PublikController@getLokasi');
     $router->get('/kategori', 'Web\PublikController@getKategori');
 
     // postingan magang
-    $router->get('/postingan-magang', 'Web\PostinganMagangController@getAll');
-    $router->get('/postingan-magang/{slug}', 'Web\PostinganMagangController@getSlug');
+    $router->get('/posts-intern', 'Web\PostinganMagangController@getAll');
+    $router->get('/posts-intern/{slug}', 'Web\PostinganMagangController@getSlug');
   });
 });
