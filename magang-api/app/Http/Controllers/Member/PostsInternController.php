@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
-use App\Repo\Member\PostinganMagangRepo;
+use App\Repo\Member\PostsInternRepo;
 use Illuminate\Http\Request;
 
-class PostinganMagangController extends Controller
+class PostsInternController extends Controller
 {
   protected $query;
 
-  public function __construct(PostinganMagangRepo $repo)
+  public function __construct(PostsInternRepo $repo)
   {
     $this->query = $repo;
   }
@@ -24,7 +24,7 @@ class PostinganMagangController extends Controller
   }
   public function getSlug($slug)
   {
-    return $this->query->getSlugPostsIntern($slug);
+    return $this->query->getDetailSlugPostsIntern($slug);
   }
   public function getDeleted($postsInternId)
   {
