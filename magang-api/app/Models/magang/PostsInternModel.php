@@ -9,14 +9,14 @@ class PostsInternModel extends Model
 	protected $table = "posts_intern";
 	protected $primaryKey = "posts_intern_id";
 	public $timestamps = false;
-	// public $appends = ["img_url"];
+	// public $appends = ["excerpt"];
 
 	public function scopeData($query)
 	{
 		return $query
 			->whereNull("dihapus_pada")
-			->where("status", 1)
-			->with(["member", "location", "categories", "technology"])
+			->where("status_active", 1)
+			->with(["member", "location", "categories"])
 			->selectRaw(
 				"*,ROW_NUMBER() over(ORDER BY posts_intern_id desc) no_urut"
 			);
@@ -61,15 +61,6 @@ class PostsInternModel extends Model
 					->orWhereRaw("LOWER(slug) like ?", [
 						"%" . strtolower(request()->categories) . "%",
 					]);
-			})
-			->whereRelation("technology", function ($technology) {
-				$technology
-					->whereRaw("LOWER(technology) like ?", [
-						"%" . strtolower(request()->technology) . "%",
-					])
-					->orWhereRaw("LOWER(slug) like ?", [
-						"%" . strtolower(request()->technology) . "%",
-					]);
 			});
 	}
 
@@ -94,12 +85,5 @@ class PostsInternModel extends Model
 			"App\Models\magang\CategoriesInternModel",
 			"categories_intern_id"
 		)->select("categories_intern_id", "categories", "slug");
-	}
-	public function technology()
-	{
-		return $this->belongsTo(
-			"App\Models\magang\TechnologyModel",
-			"technology_id"
-		)->select("technology_id", "technology", "slug");
 	}
 }

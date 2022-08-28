@@ -92,7 +92,6 @@ class PostsInternRepo
       $save->location_id = $params->location_id;
       $save->qualification = $params->qualification;
       $save->categories_intern_id = $params->categories_intern_id;
-      $save->technology_id = $params->technology_id;
       $save->date_start = $params->date_start;
       $save->date_end = $params->date_end;
       $save->status_active = (int)$params->status_active;
